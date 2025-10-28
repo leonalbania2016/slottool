@@ -206,4 +206,13 @@ def run_web():
 
 threading.Thread(target=run_web).start()
 
-bot.run(TOKEN)
+if __name__ == "__main__":
+    from threading import Thread
+    import webbrowser
+
+    def run_flask():
+        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
+    Thread(target=run_flask).start()
+    bot.run(DISCORD_TOKEN)
+

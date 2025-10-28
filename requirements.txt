@@ -1,4 +1,7 @@
-discord.py==2.4.0
 Flask==3.0.3
-Pillow==10.3.0
-
+discord.py==2.4.0
+imageio==2.35.1
+Pillow==10.4.0
+requests==2.32.3
+aiohttp==3.9.5
+gunicorn==22.0.0
