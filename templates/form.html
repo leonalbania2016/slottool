@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GFX Panel</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
+    input, select, button { margin: 4px; padding: 8px; border-radius: 4px; }
+    .slot-row { display: flex; align-items: center; margin-bottom: 6px; }
+    .slot-label { width: 40px; }
+  </style>
+</head>
+<body>
+  <h2>GFX Sender</h2>
+  <label>Secret Key: </label><input type="password" id="secret"><br>
+  <label>Guild ID: </label><input type="text" id="guild_id"><br>
+  <label>Channel ID: </label><input type="text" id="channel_id"><br>
+  <hr>
+  <div id="slots"></div>
+  <button onclick="sendAll()">Send All</button>
+
+  <script>
+    const slotContainer = document.getElementById('slots');
+    for (let i = 2; i <= 25; i++) {
+      const row = document.createElement('div');
+      row.className = "slot-row";
+      row.innerHTML = `<div class="slot-label">${i}</div>
+                       <input type="text" id="slot${i}" placeholder="Enter text for slot ${i}" size="60">`;
+      slotContainer.appendChild(row);
+    }
+
+    async function sendAll() {
+      const secret = document.getElementById('secret').value;
+      const guild_id = document.getElementById('guild_id').value;
+      const channel_id = document.getElementById('channel_id').value;
+      const slots = {};
+      for (let i = 2; i <= 25; i++) {
+        const val = document.getElementById('slot' + i).value;
+        if (val.trim() !== "") slots[i] = val;
+      }
+
+      const res = await fetch("/sendgfx", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret, guild_id, channel_id, slots })
+      });
+      const data = await res.json();
+      alert(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>
